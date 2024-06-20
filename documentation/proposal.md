@@ -41,11 +41,31 @@ In the fast-paced world of technology, consumers demand a user-friendly and secu
 
 ## User Interface
 ### Wireframe
+
 - **Home Page**: Displaying featured products.
-<img src="/images/Home.png" width="200" style="display: block; margin: 0 auto" />
+- <img src="images/Home.png" width="500"/>
+
 - **Product Page**: Detailed view of a single product with an option to add to cart.
+- <img src="images/product.png" width="500"/>
+
 - **Cart Page**: Summary of items in the cart with a checkout button.
-- **Profile Page**: User information and order history.
+- <img src="images/checkout.png" width="500"/>
+
+- **Profile Login Page**: User Login.
+- <img src="images/login.png" width="500"/>
+
+- **Profile sign up Page**: User sign up.
+- <img src="images/signUp.png" width="500"/>
+
+- **Admin product Page**: Admin is able to Add, Edit products.
+- <img src="images/admin-product-page.png" width="500"/>
+
+- **Admin user Page**: Admin is able to manage users.
+- <img src="images/admin-user-page.png" width="500"/>
+
+- **Search Page**: User able to view rows of products.
+- <img src="images/searchByProduct.png" width="500"/>
+
 
 ## RESTful Routing
 ### Routes
