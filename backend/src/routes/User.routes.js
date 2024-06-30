@@ -16,7 +16,7 @@ export default class UserRoutes {
         this.#router.get("/getUsers");
         this.#router.post("/register");
         this.#router.post("/login");
-        this.#router.post("/update-password");
+
     }
 
     getRouter = () => {
