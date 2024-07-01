@@ -19,6 +19,7 @@ const userSchema = new Schema({
         type: String,
         enum: ['user', 'admin'],
         default: 'user',
+        required: false, // Make it optional
     },
 }, { timestamps: true });
 
