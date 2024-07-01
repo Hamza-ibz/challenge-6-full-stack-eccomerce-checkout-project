@@ -1,25 +1,39 @@
-// go to 10 min SE-2404-A-NodeJS-Session2-23052024 for postman thing
-
 import Config from "./config/Config.js";
 import Database from "./db/Database.js";
 import Server from "./server/Server.js";
 import UserRoutes from "./routes/User.routes.js";
+import ProductRoutes from "./routes/Product.routes.js";
+import OrderRoutes from "./routes/Order.routes.js";
+import CartRoutes from "./routes/Cart.routes.js";
+
+// Load configuration
 Config.load();
 const { PORT, HOST, DB_URI } = process.env;
 
+// Initialize routes
 const userRoutes = new UserRoutes();
+const productRoutes = new ProductRoutes();
+const orderRoutes = new OrderRoutes();
+const cartRoutes = new CartRoutes();
 
+// Initialize server with all routes
+const server = new Server(PORT, HOST, [
+    userRoutes,
+    productRoutes,
+    orderRoutes,
+    cartRoutes
+]);
 
-const server = new Server(PORT, HOST, userRoutes);
+// Initialize database
 const database = new Database(DB_URI);
 
-server.start();
-await database.connect();
+const startApplication = async () => {
+    try {
+        await database.connect();
+        server.start();
+    } catch (error) {
+        console.error("Failed to start the application", error);
+    }
+};
 
-
-
-
-
-
-
-
+startApplication();

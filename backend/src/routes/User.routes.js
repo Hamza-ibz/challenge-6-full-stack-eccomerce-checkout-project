@@ -8,7 +8,7 @@ export default class UserRoutes {
     #router;
     #routeStartPoint;
 
-    constructor(userController = new UserController(), routeStartPoint = "/") {
+    constructor(userController = new UserController(), routeStartPoint = "/users") {
         this.#userController = userController;
         this.#routeStartPoint = routeStartPoint;
         this.#router = Router();
@@ -17,7 +17,7 @@ export default class UserRoutes {
 
     #initialiseRoutes = () => {
         // User routes
-        this.#router.get("/users", this.#userController.getUsers);
+        this.#router.get("/", this.#userController.getUsers);
         this.#router.post("/register", registerValidator.validate(), registerValidator.checkDuplicateEmail(), this.#userController.registerUser);
         this.#router.post("/login", this.#userController.loginUser);
         this.#router.post("/update-password", authMiddleware, this.#userController.updatePassword);

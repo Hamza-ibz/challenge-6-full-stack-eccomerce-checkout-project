@@ -6,15 +6,15 @@ export default class Server {
     #app;
     #host;
     #port;
-    #router;
+    #routes;
     #server;
 
-    constructor(port, host, router) {
+    constructor(port, host, routes) {
         this.#app = express();
         this.#port = port;
         this.#host = host;
         this.#server = null;
-        this.#router = router;
+        this.#routes = routes; // Array of routes
     }
 
     getApp = () => {
@@ -23,9 +23,7 @@ export default class Server {
 
     start = () => {
         this.#server = this.#app.listen(this.#port, this.#host, () => {
-            console.log(
-                `Server is listening on http://${this.#host}:${this.#port}`
-            );
+            console.log(`Server is listening on http://${this.#host}:${this.#port}`);
         });
 
         this.#app.use(express.json()); // MEGA IMPORTANT FOR PROCESSING req.body. this is used for the middleware
@@ -33,10 +31,10 @@ export default class Server {
         // Enable CORS for all routes
         this.#app.use(cors());
 
-        this.#app.use(
-            this.#router.getRouteStartPoint(),
-            this.#router.getRouter()
-        );
+        // Setup all routes
+        this.#routes.forEach(route => {
+            this.#app.use(route.getRouteStartPoint(), route.getRouter());
+        });
     };
 
     close = () => {
