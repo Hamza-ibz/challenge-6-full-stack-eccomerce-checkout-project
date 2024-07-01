@@ -27,7 +27,6 @@ export default class UserController {
     };
 
     registerUser = async (req, res) => {
-
         const invalidError = new Error("Invalid User");
         try {
             if (!req.body) throw invalidError;
@@ -37,8 +36,9 @@ export default class UserController {
         } catch (e) {
             if (e.message === invalidError.message) {
                 res.status(400).json({ message: e.message });
+            } else {
+                res.status(500).json({ message: e.message });
             }
-            res.status(500).json({ message: e.message });
         }
     };
 
@@ -53,6 +53,4 @@ export default class UserController {
             res.status(500).json({ message: e.message });
         }
     };
-
 }
-
