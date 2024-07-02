@@ -43,11 +43,11 @@ content-type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjgyYmFhMzc0MTRjNWQ3MjIwZDEwNzEiLCJpYXQiOjE3MTk4NTQ0NjEsImV4cCI6MTc1MTM5MDQ2MX0.tOLIHPyfzlMKSDm7uAZX73O_6f9XJpdWeYjs7o5clTQ
 
 ###
-DELETE  http://localhost:3000/cart
+DELETE http://localhost:3000/cart
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjgyYmFhMzc0MTRjNWQ3MjIwZDEwNzEiLCJpYXQiOjE3MTk4NTQ0NjEsImV4cCI6MTc1MTM5MDQ2MX0.tOLIHPyfzlMKSDm7uAZX73O_6f9XJpdWeYjs7o5clTQ
 
 
 {
-    "productId": 1  // This is the product ID from the Fake Store API
+    "productId": 1  
 }

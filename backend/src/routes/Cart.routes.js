@@ -20,6 +20,8 @@ export default class CartRoutes {
         this.#router.post("/", authMiddleware, this.#cartController.addToCart);
         this.#router.put("/", authMiddleware, this.#cartController.updateCart);
         this.#router.delete("/", authMiddleware, this.#cartController.removeFromCart);
+        this.#router.delete("/all", authMiddleware, this.#cartController.removeAllFromCart);
+
     }
 
     getRouter = () => {

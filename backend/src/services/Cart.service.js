@@ -91,4 +91,15 @@ export default class CartService {
         await cart.save();
         return this.getCart(userId);
     }
+
+    async removeAllFromCart(userId) {
+        const cart = await Cart.findOne({ user: userId });
+        if (!cart) {
+            throw new Error("Cart not found");
+        }
+
+        cart.products = [];
+        await cart.save();
+        return this.getCart(userId);
+    }
 }

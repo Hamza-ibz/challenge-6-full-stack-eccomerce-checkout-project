@@ -42,4 +42,12 @@ export default class CartController {
             res.status(500).json({ message: e.message });
         }
     };
+    removeAllFromCart = async (req, res) => {
+        try {
+            const updatedCart = await this.#service.removeAllFromCart(req.userId);
+            res.json(updatedCart);
+        } catch (e) {
+            res.status(500).json({ message: e.message });
+        }
+    };
 }
