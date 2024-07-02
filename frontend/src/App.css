@@ -1,26 +1,162 @@
 /* App.css */
 
-body,
-html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    background-image: url('../assets/sunset-background.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+/* General styles for the entire app */
+.overflow-hidden {
+    overflow: hidden;
 }
 
-.app-container {
+/* Header Component */
+.header {
+    background-color: #333;
+    /* Example background color */
+    color: white;
+    padding: 1rem;
+}
+
+.header-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.header-links {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    gap: 1rem;
+}
+
+.header-link {
+    color: white;
+    text-decoration: none;
+}
+
+.header-link:hover {
+    text-decoration: underline;
+}
+
+/* Footer Component */
+.footer {
+    background-color: #333;
+    /* Example background color */
+    color: white;
+    padding: 1rem;
+    text-align: center;
+}
+
+/* Home Component */
+.home {
+    padding: 2rem;
+}
+
+.home-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.home-products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+/* Product Component (assuming it's similar to the previous example) */
+.product-container {
+    border: 1px solid #e4e4e4;
+    height: 300px;
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.product-image-wrapper {
     width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.content-wrap {
-    flex: 1;
-    /* This makes the main content area grow to fill the available space */
+.product-image {
+    width: 200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-img {
+    max-height: 160px;
+    transition: transform 0.3s;
+}
+
+.product-container:hover .product-img {
+    transform: scale(1.1);
+}
+
+.product-buttons {
+    position: absolute;
+    top: 1.5rem;
+    right: -2.75rem;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.product-container:hover .product-buttons {
+    right: 1.25rem;
+    opacity: 1;
+}
+
+.add-to-cart-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    background-color: #38b2ac;
+    /* bg-teal-500 */
+    color: white;
+}
+
+.plus-icon {
+    font-size: 1.5rem;
+}
+
+.view-details-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    background-color: white;
+    color: var(--primary-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-category {
+    font-size: 0.875rem;
+    /* tex-sm */
+    text-transform: capitalize;
+    color: #6b7280;
+    /* text-gray-500 */
+    margin-bottom: 0.25rem;
+    /* mb-1 */
+}
+
+.product-title {
+    font-weight: 600;
+    /* font-semibold */
+    margin-bottom: 0.25rem;
+    /* mb-1 */
+}
+
+.product-price {
+    font-weight: 600;
+    /* font-semibold */
 }

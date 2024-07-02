@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import "./App.css"; // Import the CSS file
 
 import Home from "./Components/pages/home/Home";
-// import ProductDetails from "./pages/ProductDetails";
-
-// import Sidebar from "./components/Sidebar";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 
@@ -37,10 +35,15 @@ const App = () => {
             <Router>
                 <Header />
                 <Routes>
-                    <Route path="/" element={<Home products={products} />}></Route>
-                    {/* <Route path="/product/:id" element={<ProductDetails />}></Route> */}
+                    <Route
+                        path="/"
+                        element={
+                            <div className="home">
+                                <Home products={products} />
+                            </div>
+                        }
+                    ></Route>
                 </Routes>
-                {/* <Sidebar /> */}
                 <Footer />
             </Router>
         </div>
@@ -48,6 +51,5 @@ const App = () => {
 };
 
 export default App;
-
 
 
