@@ -1,30 +1,28 @@
-// tailwind.config.js
-
 module.exports = {
-  content: ['./src/**/*.{js,jsx,ts,tsx}'], // Specify where Tailwind should look for CSS classes
+  content: ['./src/**/*.{js,jsx,ts,tsx}'], // Include all relevant file types in the src directory
   theme: {
     fontFamily: {
-      primary: 'Poppins', // Define your primary font family
+      primary: ['Poppins', 'sans-serif'],
     },
     container: {
       padding: {
-        DEFAULT: '30px', // Default padding for containers
-        lg: '0', // No padding for large screens
+        DEFAULT: '30px',
+        lg: '0',
       },
     },
     screens: {
-      sm: '640px', // Small screen size
-      md: '768px', // Medium screen size
-      lg: '1024px', // Large screen size
-      xl: '1440px', // Extra large screen size
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1440px',
     },
     extend: {
       colors: {
-        primary: '#222222', // Custom primary color
-        secondary: '#F5E6E0', // Custom secondary color
+        primary: '#222222',
+        secondary: '#F5E6E0',
       },
       backgroundImage: {
-        hero: "url('./public/assets/img/bghero.jpg')", // Custom background image
+        hero: "url('/src/assets/img/bghero.jpg')", // Update the path to match your project structure
       },
     },
   },

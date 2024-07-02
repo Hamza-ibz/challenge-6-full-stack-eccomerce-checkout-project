@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 import { Link } from "react-router-dom";
-import Logo from "../../public/assets/img/bghero.jpg";
+import Logo from "../assets/img/bghero.jpg";
 import { BsBag } from "react-icons/bs";
 
 const Header = () => {
@@ -21,7 +21,7 @@ const Header = () => {
 
   return (
     <header
-      className={`${isActive ? "bg-white py-4 shadow-md" : "bg-none py-6"
+      className={`${isActive ? "bg-white py-4 shadow-md" : "bg-gray-200 py-6"
         } fixed w-full z-10 lg:px-8 transition-all`}
     >
       <div className="container mx-auto flex items-center justify-between h-full">

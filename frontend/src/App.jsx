@@ -1,12 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import "./App.css"; // Import the CSS file
+// import "./App.css"; // Import the CSS file
 // import "./index.css";
 import ProductDetails from "./contexts/ProductContext"
 import Home from "./Components/pages/home/Home";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
+import Sidebar from "./Components/Sidebar";
 
 const App = () => {
     return (
@@ -15,9 +16,9 @@ const App = () => {
                 <Header />
                 <Routes>
                     <Route path="/" element={<Home />}></Route>
-                    {/* <Route path="/product/:id" element={<ProductDetails />}></Route> */}
+                    <Route path="/product/:id" element={<ProductDetails />}></Route>
                 </Routes>
-                {/* <Sidebar /> */}
+                <Sidebar />
                 <Footer />
             </Router>
         </div>
