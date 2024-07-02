@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from 'react-router-dom';
+import "./main.css";
 
 import App from "./App.jsx";
 
@@ -10,8 +11,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js"; // they are in node_modules 
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <BrowserRouter>
+    <React.StrictMode>
         <App />
-    </BrowserRouter>
+    </React.StrictMode>
 
 );

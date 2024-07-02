@@ -4,7 +4,7 @@ export const ProductContext = createContext();
 
 const ProductProvider = ({ children }) => {
     const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -22,10 +22,12 @@ const ProductProvider = ({ children }) => {
         fetchProducts();
     }, []);
 
+    // Render loading state if products are still loading
     if (loading) {
-        return <div>Loading...</div>; // Or render a loading spinner/component
+        return <div>Loading...</div>;
     }
 
+    // Render ProductContext.Provider with fetched products
     return (
         <ProductContext.Provider value={{ products }}>
             {children}
