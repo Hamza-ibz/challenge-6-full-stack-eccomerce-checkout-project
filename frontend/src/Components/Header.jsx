@@ -1,43 +1,64 @@
 import React, { useContext, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Logo from "../assets/img/logo.jpg";
+import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
-import { Link } from "react-router-dom";
-import Logo from "../assets/img/bghero.jpg";
-import { BsBag } from "react-icons/bs";
 
 const Header = () => {
-  // header state
   const [isActive, setIsActive] = useState(false);
-  console.log(SidebarContext);
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
 
-  // event listener
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      window.scrollY > 60 ? setIsActive(true) : setIsActive(false);
-    });
-  });
+    const handleScroll = () => {
+      setIsActive(window.scrollY > 60);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <header
-      className={`${isActive ? "bg-white py-4 shadow-md" : "bg-gray-200 py-6"
-        } fixed w-full z-10 lg:px-8 transition-all`}
+      className={`${isActive ? "bg-white shadow-md" : "bg-gray-200"
+        } py-4 fixed w-full z-10 lg:px-8 transition-all`}
     >
       <div className="container mx-auto flex items-center justify-between h-full">
-        <Link to={"/"}>
-          <div className="w-[40px]">
-            <img src={Logo} alt="" />
-          </div>
+        {/* Logo and Home Link */}
+        <Link to="/" className="flex items-center">
+          <img src={Logo} alt="Logo" className="w-12 h-12 mr-2" />
+          <span className="text-lg font-semibold text-gray-800">Your App Name</span>
         </Link>
 
-        {/* cart */}
+        {/* Centered Navigation Links */}
+        <div className="flex-grow flex justify-center">
+          <nav className="flex space-x-6 border border-gray-300 rounded-md overflow-hidden">
+            <Link
+              to="/"
+              className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+            >
+              Home
+            </Link>
+            <Link
+              to="/login"
+              className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+            >
+              Login
+            </Link>
+          </nav>
+        </div>
+
+        {/* Cart */}
         <div
           onClick={() => setIsOpen(!isOpen)}
-          className="cursor-pointer flex relative"
+          className="cursor-pointer relative flex items-center"
         >
-          <BsBag className="text-2xl" />
-          <div className="bg-red-500 absolute -right-2 -bottom-2 text-[12px] w-[18px] h-[18px] text-white rounded-full flex justify-center items-center">
+          <BsBag className="text-3xl text-gray-800" />
+          <div className="bg-red-500 text-white w-5 h-5 flex justify-center items-center rounded-full absolute -right-2 -top-2">
             {itemAmount}
           </div>
         </div>

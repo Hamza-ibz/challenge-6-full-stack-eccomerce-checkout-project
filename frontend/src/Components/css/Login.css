@@ -1,0 +1,134 @@
+/* Login page container */
+.loginPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+/* Container styling */
+.loginContainer {
+    max-width: 500px;
+    width: 90%;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 20px;
+    margin-top: 50px;
+}
+
+.loginContainer h2 {
+    color: #333333;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Form input styling */
+.loginFormLabel {
+    font-weight: bold;
+    color: #555555;
+    margin-bottom: 10px;
+    display: block;
+    text-align: left;
+}
+
+.loginFormControl {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Button styling */
+.loginBtnPrimary {
+    width: 100%;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #1b78cf;
+    border: none;
+    border-radius: 5px;
+}
+
+.loginBtnPrimary:hover {
+    background-color: #4562a0;
+}
+
+/* Error message styling */
+.loginAlertDanger {
+    color: #861829;
+    background-color: #e9c7c9;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border-color: #e0abb0;
+    padding: 12px;
+}
+
+/* Link styling */
+.loginLink {
+    color: #1183f6;
+    text-decoration: none;
+    margin-left: 3px;
+}
+
+.loginLink:hover {
+    text-decoration: underline;
+    color: #1258c2;
+}
+
+.register {
+    margin-top: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* FontAwesome icon styling */
+.loginIcon {
+    font-size: 80px;
+    color: #3b3838;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+/* Success message styling */
+.userSuccessAlert {
+    color: #104b1b;
+    background-color: #a2dcab;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-color: #b1e3b2;
+    padding: 10px;
+}
+
+/* Error message styling */
+.userErrorAlert {
+    color: #82252e;
+    background-color: #ddbfc2;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border-color: #e6b7bc;
+    padding: 10px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .loginContainer {
+        padding: 20px;
+    }
+
+    .loginIcon {
+        font-size: 60px;
+    }
+}
