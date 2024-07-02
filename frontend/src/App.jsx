@@ -10,6 +10,8 @@ import Home from "./Components/pages/home/Home";
 import Header from "./Components/Header";
 import Footer from "./Components/Footer";
 import Sidebar from "./Components/Sidebar";
+import UpdatePassword from './Components/pages/user/UpdatePassword';
+
 
 const App = () => {
     const [loggedIn, setLoggedIn] = useState(false);
@@ -31,6 +33,7 @@ const App = () => {
                     <Route path="/product/:id" element={<ProductDetails />}></Route>
                     <Route path="/login" element={<Login setLoggedIn={setLoggedIn} />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/update-password" element={<UpdatePassword />} /> {/* Add UpdatePassword route */}
                 </Routes>
                 <Sidebar />
                 <Footer />
