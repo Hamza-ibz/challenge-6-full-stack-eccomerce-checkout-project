@@ -50,10 +50,10 @@ const Register = () => {
 
         // Set default favouriteLocations
         const userData = {
-            username: formData.username,
+            // username: formData.username,
             email: formData.email,
             password: formData.password,
-            favouriteLocations: [], // Default location value
+            // favouriteLocations: [], // Default location value
         };
 
         const response = await registerUser(userData);

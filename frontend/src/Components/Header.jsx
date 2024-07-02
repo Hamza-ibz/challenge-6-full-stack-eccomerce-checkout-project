@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.jpg";
 import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
@@ -9,6 +9,27 @@ const Header = () => {
   const [isActive, setIsActive] = useState(false);
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    checkLoggedIn();
+  }, [location]);
+
+  const checkLoggedIn = () => {
+    if (localStorage.getItem("token") !== null) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+    navigate("/login");
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,7 +52,9 @@ const Header = () => {
         {/* Logo and Home Link */}
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="w-12 h-12 mr-2" />
-          <span className="text-lg font-semibold text-gray-800">Your App Name</span>
+          <span className="text-lg font-semibold text-gray-800">
+            Your App Name
+          </span>
         </Link>
 
         {/* Centered Navigation Links */}
@@ -43,12 +66,30 @@ const Header = () => {
             >
               Home
             </Link>
-            <Link
-              to="/login"
-              className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
-            >
-              Login
-            </Link>
+            {loggedIn ? (
+              <>
+                <Link
+                  to="/update-password"
+                  className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+                >
+                  Update Password
+                </Link>
+                <Link
+                  to="/login"
+                  className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Link>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+              >
+                Login
+              </Link>
+            )}
           </nav>
         </div>
 
@@ -68,7 +109,6 @@ const Header = () => {
 };
 
 export default Header;
-
 
 
 // import React from 'react';
