@@ -1,5 +1,13 @@
-import React, { createContext, useState, useEffect } from "react";
 
+
+import React, { createContext, useState, useEffect } from "react";
+import {
+  fetchCart as fetchCartAPI,
+  addToCart as addToCartAPI,
+  updateCartItem as updateCartItemAPI,
+  removeCartItem as removeCartItemAPI,
+  clearCart as clearCartAPI
+} from "../services/cartService"
 export const CartContext = createContext();
 
 const CartProvider = ({ children }) => {
@@ -28,7 +36,7 @@ const CartProvider = ({ children }) => {
   }, [cart]);
 
   // add to cart
-  const addToCart = (product, id) => {
+  const addToCart = async (product, id) => {
     const newItem = { ...product, amount: 1 };
     // check if the item is already in the cart
     const cartItem = cart.find((item) => {
@@ -44,29 +52,57 @@ const CartProvider = ({ children }) => {
     } else {
       setCart([...cart, newItem]);
     }
+    // Prepare the payload for the API request
+    const payload = { productId: product.id };
+
+    try {
+      await addToCartAPI(payload);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+    }
   };
 
   // remove from cart
-  const removeFromCart = (id) => {
+  const removeFromCart = async (id) => {
     const newCart = cart.filter((item) => {
       return item.id !== id;
     });
     setCart(newCart);
+
+    // // Prepare the payload for the API request
+    // const payload = { productId: id };
+
+    // try {
+    //   await removeCartItemAPI(payload);
+    // } catch (error) {
+    //   console.error('Failed to remove to cart:', error);
+    // }
   };
 
   // cleart cart
-  const clearCart = () => {
+  const clearCart = async () => {
     setCart([]);
+
+    try {
+      await clearCartAPI();
+    } catch (error) {
+      console.error('Failed to remove all from cart:', error);
+    }
   };
 
   // increase amount
-  const increaseAmount = (id) => {
+  const increaseAmount = async (id) => {
     const cartItem = cart.find((item) => item.id === id);
     addToCart(cartItem, id);
+    try {
+      await addToCartAPI(payload);
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+    }
   };
 
   // decrease amount
-  const decreaseAmount = (id) => {
+  const decreaseAmount = async (id) => {
     const cartItem = cart.find((item) => item.id === id);
     if (cartItem) {
       const newCart = cart.map((item) => {
@@ -80,6 +116,15 @@ const CartProvider = ({ children }) => {
     }
     if (cartItem.amount < 2) {
       removeFromCart(id);
+    }
+
+    // Prepare the payload for the API request
+    const payload = { productId: id };
+
+    try {
+      await removeCartItemAPI(payload);
+    } catch (error) {
+      console.error('Failed to remove to cart:', error);
     }
   };
 
