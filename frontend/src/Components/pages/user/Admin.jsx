@@ -50,7 +50,7 @@ const Admin = () => {
                             {user.email} - {user.role}
                         </div>
                         <button
-                            // onClick={() => handleRemoveUser(user._id)}
+                            onClick={() => handleRemoveUser(user._id)}
                             className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 focus:outline-none focus:bg-red-600"
                         >
                             Remove

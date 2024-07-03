@@ -61,15 +61,15 @@ export const fetchAdminData = async () => {
     }
 };
 
-// export const deleteUser = async (userId) => {
-//     try {
-//         const token = localStorage.getItem('token');
-//         await axios.delete(`${BASE_URL}/${userId}`, {
-//             headers: {
-//                 'Authorization': `Bearer ${token}`,
-//             },
-//         });
-//     } catch (error) {
-//         throw new Error(error.response?.data?.message || 'An error occurred while deleting the user.');
-//     }
-// };
+export const deleteUser = async (userId) => {
+    try {
+        const token = localStorage.getItem('token');
+        await axios.delete(`${BASE_URL}/${userId}`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'An error occurred while deleting the user.');
+    }
+};
