@@ -3,7 +3,6 @@ import Database from "./db/Database.js";
 import Server from "./server/Server.js";
 import UserRoutes from "./routes/User.routes.js";
 import ProductRoutes from "./routes/Product.routes.js";
-import OrderRoutes from "./routes/Order.routes.js";
 import CartRoutes from "./routes/Cart.routes.js";
 
 // Load configuration
@@ -13,14 +12,12 @@ const { PORT, HOST, DB_URI } = process.env;
 // Initialize routes
 const userRoutes = new UserRoutes();
 const productRoutes = new ProductRoutes();
-const orderRoutes = new OrderRoutes();
 const cartRoutes = new CartRoutes();
 
 // Initialize server with all routes
 const server = new Server(PORT, HOST, [
     userRoutes,
     productRoutes,
-    orderRoutes,
     cartRoutes
 ]);
 
