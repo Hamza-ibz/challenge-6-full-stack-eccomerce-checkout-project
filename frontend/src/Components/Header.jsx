@@ -10,6 +10,7 @@ const Header = ({ resetCart }) => {
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,17 +19,23 @@ const Header = ({ resetCart }) => {
   }, [location]);
 
   const checkLoggedIn = () => {
-    if (localStorage.getItem("token") !== null) {
+    const token = localStorage.getItem("token");
+    const role = localStorage.getItem("role");
+    if (token !== null) {
       setLoggedIn(true);
+      setIsAdmin(role === 'admin');
     } else {
       setLoggedIn(false);
+      setIsAdmin(false);
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
     setLoggedIn(false);
-    resetFavourites();
+    setIsAdmin(false);
+    resetCart();
     navigate("/login");
   };
 
@@ -75,6 +82,14 @@ const Header = ({ resetCart }) => {
                 >
                   Update Password
                 </Link>
+                {isAdmin && (
+                  <Link
+                    to="/admin"
+                    className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"
+                  >
+                    Admin
+                  </Link>
+                )}
                 <Link
                   to="/login"
                   className="text-gray-800 px-4 py-3 text-lg font-medium border border-transparent rounded-md hover:bg-[#fed7aa] hover:text-gray-900 transition duration-300"

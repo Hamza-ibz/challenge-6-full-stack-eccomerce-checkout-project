@@ -73,3 +73,18 @@ export const deleteUser = async (userId) => {
         throw new Error(error.response?.data?.message || 'An error occurred while deleting the user.');
     }
 };
+
+
+export const updateUserRole = async (userId, newRole) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.put(`${BASE_URL}/role/${userId}`, { role: newRole }, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'An error occurred while updating the user role.');
+    }
+};
