@@ -52,7 +52,25 @@ export default class UsersService {
         const payload = { userId: user._id };
         const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '365d' });
 
-        return { token }; // return { token: token };
+        return { token, role: user.role }; // return { token };
     };
 
+    deleteUserById = async (userId) => {
+        const deletedUser = await Users.findOneAndDelete({ _id: userId });
+        if (!deletedUser) {
+            throw new Error('User not found');
+        }
+        return deletedUser;
+    };
+    // Method to update user role by ID
+    updateUserRoleById = async (userId, newRole) => {
+        const user = await Users.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        user.role = newRole;
+        await user.save();
+        return user;
+    };
 }

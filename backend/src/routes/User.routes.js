@@ -21,6 +21,11 @@ export default class UserRoutes {
         this.#router.post("/register", registerValidator.validate(), registerValidator.checkDuplicateEmail(), this.#userController.registerUser);
         this.#router.post("/login", this.#userController.loginUser);
         this.#router.post("/update-password", authMiddleware, this.#userController.updatePassword);
+        this.#router.delete("/:id", authMiddleware, this.#userController.deleteUserById);
+        this.#router.get("/admin", authMiddleware, this.#userController.getAdminPage);
+        this.#router.put("/role/:id", authMiddleware, this.#userController.updateUserRoleById);
+
+        // this.#router.get("/admin", authMiddleware, verifyRole, this.#userController.getAdminPage);
     }
 
     getRouter = () => {
