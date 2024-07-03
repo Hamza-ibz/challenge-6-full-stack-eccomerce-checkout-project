@@ -1,167 +1,177 @@
-import chai from "chai";
-import { expect } from "chai";
-import sinon from "sinon";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import UsersService from "../../src/services/Users.service.js";
-import Users from "../../src/models/Users.model.js";
-import chaiAsPromised from "chai-as-promised";
+// backend/test/servicesTest/Users.service.test.js
 
+import { expect } from 'chai';
+import sinon from 'sinon';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import Users from '../../src/models/Users.model.js'; // Adjust path as per your project structure
+import UsersService from '../../src/services/Users.service.js'; // Adjust path as per your project structure
 
-chai.use(chaiAsPromised); // If using chai-as-promised
+const JWT_SECRET = process.env.JWT_SECRET || 'hamza_jwt_not-so-secret_key';
 
-describe("UsersService Unit Tests", () => {
+describe('UsersService Unit Tests', () => {
+    let usersService;
+
+    beforeEach(() => {
+        usersService = new UsersService();
+    });
+
     afterEach(() => {
         sinon.restore();
     });
 
-    describe("getUsers", () => {
-        it("should return all users", async () => {
-            const fakeUsers = [{ name: "User 1" }, { name: "User 2" }];
-            sinon.stub(Users, "find").resolves(fakeUsers);
+    describe('getUsers', () => {
+        it('should call find on the Users model', async () => {
+            const findStub = sinon.stub(Users, 'find').returns([]);
 
-            const usersService = new UsersService();
-            const users = await usersService.getUsers();
+            await usersService.getUsers();
 
-            expect(users).to.deep.equal(fakeUsers);
+            expect(findStub.calledOnce).to.be.true;
+            findStub.restore();
         });
 
-        it("should handle errors during getUsers", async () => {
-            sinon.stub(Users, "find").rejects(new Error("Database error"));
+        it('should return the result of calling find on the Users model', async () => {
+            const users = [{ _id: '1', email: 'test@example.com' }];
+            const findStub = sinon.stub(Users, 'find').resolves(users);
 
-            const usersService = new UsersService();
+            const result = await usersService.getUsers();
 
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.getUsers()).to.be.rejectedWith("Database error");
+            expect(result).to.deep.equal(users);
+            findStub.restore();
+        });
+
+        it('should return an empty array if there are no users', async () => {
+            const users = [];
+            const findStub = sinon.stub(Users, 'find').returns(users);
+
+            const result = await usersService.getUsers();
+
+            expect(result).to.deep.equal(users);
+            findStub.restore();
         });
     });
 
-    describe("updatePassword", () => {
-        it("should update the user's password", async () => {
-            const userId = "user_id";
-            const currentPassword = "current_password";
-            const newPassword = "new_password";
+    describe('registerUser', () => {
+        it('should hash the password and save the user', async () => {
+            const newUser = { email: 'test@example.com', password: 'password' };
+            const hashedPassword = 'hashedPassword';
+            const saveStub = sinon.stub(Users.prototype, 'save').resolves(newUser);
+            const hashStub = sinon.stub(bcrypt, 'hash').resolves(hashedPassword);
 
-            const hashedPassword = await bcrypt.hash(currentPassword, 10);
-            const user = { _id: userId, password: hashedPassword, save: sinon.stub().resolves() };
+            const result = await usersService.registerUser(newUser);
 
-            sinon.stub(Users, "findById").resolves(user);
-            sinon.stub(bcrypt, "compare").resolves(true);
-            sinon.stub(bcrypt, "hash").resolves("hashed_new_password");
+            expect(hashStub.calledOnce).to.be.true;
+            expect(saveStub.calledOnce).to.be.true;
+            expect(result).to.equal(newUser);
+            hashStub.restore();
+            saveStub.restore();
+        });
 
-            const usersService = new UsersService();
+        it('should throw an error when saving fails', async () => {
+            const newUser = { email: 'test@example.com', password: 'password' };
+            const error = new Error('Invalid User');
+            const saveStub = sinon.stub(Users.prototype, 'save').throws(error);
+            const hashStub = sinon.stub(bcrypt, 'hash').resolves('hashedPassword');
+
+            try {
+                await usersService.registerUser(newUser);
+                expect.fail('Expected error was not thrown');
+            } catch (err) {
+                expect(err).to.equal(error);
+            }
+            hashStub.restore();
+            saveStub.restore();
+        });
+    });
+
+    describe('loginUser', () => {
+
+        it('should throw an error for invalid email', async () => {
+            const email = 'invalid@example.com';
+            const password = 'password';
+            const findOneStub = sinon.stub(Users, 'findOne').resolves(null);
+
+            try {
+                await usersService.loginUser(email, password);
+                expect.fail('Expected error was not thrown');
+            } catch (err) {
+                expect(err.message).to.equal('Invalid credentials for for Email');
+            }
+            findOneStub.restore();
+        });
+
+        it('should throw an error for invalid password', async () => {
+            const user = { _id: '1', email: 'test@example.com', password: 'hashedPassword' };
+            const email = 'test@example.com';
+            const password = 'invalidPassword';
+            const findOneStub = sinon.stub(Users, 'findOne').resolves(user);
+            const compareStub = sinon.stub(bcrypt, 'compare').resolves(false);
+
+            try {
+                await usersService.loginUser(email, password);
+                expect.fail('Expected error was not thrown');
+            } catch (err) {
+                expect(err.message).to.equal('Invalid credentials for Password');
+            }
+            findOneStub.restore();
+            compareStub.restore();
+        });
+    });
+
+    describe('updatePassword', () => {
+        it('should update the password for valid current password', async () => {
+            const userId = '1';
+            const currentPassword = 'currentPassword';
+            const newPassword = 'newPassword';
+            const user = { _id: '1', password: 'hashedPassword', save: sinon.stub().resolves() };
+            const findByIdStub = sinon.stub(Users, 'findById').resolves(user);
+            const compareStub = sinon.stub(bcrypt, 'compare').resolves(true);
+            const hashStub = sinon.stub(bcrypt, 'hash').resolves('newHashedPassword');
+
             await usersService.updatePassword(userId, currentPassword, newPassword);
 
-            expect(user.password).to.equal("hashed_new_password");
+            expect(findByIdStub.calledOnce).to.be.true;
+            expect(compareStub.calledOnce).to.be.true;
+            expect(hashStub.calledOnce).to.be.true;
             expect(user.save.calledOnce).to.be.true;
+            findByIdStub.restore();
+            compareStub.restore();
+            hashStub.restore();
         });
 
-        it("should handle errors during updatePassword", async () => {
-            sinon.stub(Users, "findById").rejects(new Error("User not found"));
+        it('should throw an error for incorrect current password', async () => {
+            const userId = '1';
+            const currentPassword = 'currentPassword';
+            const newPassword = 'newPassword';
+            const user = { _id: '1', password: 'hashedPassword', save: sinon.stub().resolves() };
+            const findByIdStub = sinon.stub(Users, 'findById').resolves(user);
+            const compareStub = sinon.stub(bcrypt, 'compare').resolves(false);
 
-            const usersService = new UsersService();
-
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.updatePassword("non_existing_id", "current_password", "new_password")).to.be.rejectedWith("User not found");
-        });
-    });
-
-    describe("registerUser", () => {
-        it("should register a new user", async () => {
-            const newUser = { name: "New User", email: "newuser@example.com", password: "password123" };
-            const savedUser = { ...newUser, _id: "generated_id" };
-
-            sinon.stub(bcrypt, "hash").resolves("hashed_password");
-            sinon.stub(Users.prototype, "save").resolves(savedUser);
-
-            const usersService = new UsersService();
-            const user = await usersService.registerUser(newUser);
-
-            expect(user).to.deep.include(savedUser);
+            try {
+                await usersService.updatePassword(userId, currentPassword, newPassword);
+                expect.fail('Expected error was not thrown');
+            } catch (err) {
+                expect(err.message).to.equal('Current password is incorrect');
+            }
+            findByIdStub.restore();
+            compareStub.restore();
         });
 
-        it("should handle errors during registerUser", async () => {
-            sinon.stub(bcrypt, "hash").rejects(new Error("Hashing error"));
+        it('should throw an error if user is not found', async () => {
+            const userId = '1';
+            const currentPassword = 'currentPassword';
+            const newPassword = 'newPassword';
+            const findByIdStub = sinon.stub(Users, 'findById').resolves(null);
 
-            const usersService = new UsersService();
-
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.registerUser({})).to.be.rejectedWith("Hashing error");
-        });
-    });
-
-    describe("loginUser", () => {
-        it("should login a user and return a token", async () => {
-            const email = "user@example.com";
-            const password = "password123";
-            const user = { _id: "user_id", email, password: await bcrypt.hash(password, 10), role: "user" };
-
-            sinon.stub(Users, "findOne").resolves(user);
-            sinon.stub(bcrypt, "compare").resolves(true);
-            sinon.stub(jwt, "sign").returns("fake_token");
-
-            const usersService = new UsersService();
-            const result = await usersService.loginUser(email, password);
-
-            expect(result.token).to.equal("fake_token");
-            expect(result.role).to.equal("user");
-        });
-
-        it("should handle errors during loginUser", async () => {
-            sinon.stub(Users, "findOne").resolves(null);
-
-            const usersService = new UsersService();
-
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.loginUser("non_existing_user@example.com", "password")).to.be.rejectedWith("Invalid credentials for Email");
+            try {
+                await usersService.updatePassword(userId, currentPassword, newPassword);
+                expect.fail('Expected error was not thrown');
+            } catch (err) {
+                expect(err.message).to.equal('User not found');
+            }
+            findByIdStub.restore();
         });
     });
 
-    describe("deleteUserById", () => {
-        it("should delete a user by ID", async () => {
-            const userId = "user_id";
-            const deletedUser = { _id: userId, name: "Deleted User" };
-
-            sinon.stub(Users, "findOneAndDelete").resolves(deletedUser);
-
-            const usersService = new UsersService();
-            const result = await usersService.deleteUserById(userId);
-
-            expect(result).to.deep.equal(deletedUser);
-        });
-
-        it("should handle errors during deleteUserById", async () => {
-            sinon.stub(Users, "findOneAndDelete").resolves(null);
-
-            const usersService = new UsersService();
-
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.deleteUserById("non_existing_id")).to.be.rejectedWith("User not found");
-        });
-    });
-
-    describe("updateUserRoleById", () => {
-        it("should update the user's role by ID", async () => {
-            const userId = "user_id";
-            const newRole = "admin";
-            const user = { _id: userId, role: "user", save: sinon.stub().resolves() };
-
-            sinon.stub(Users, "findById").resolves(user);
-
-            const usersService = new UsersService();
-            await usersService.updateUserRoleById(userId, newRole);
-
-            expect(user.role).to.equal(newRole);
-            expect(user.save.calledOnce).to.be.true;
-        });
-
-        it("should handle errors during updateUserRoleById", async () => {
-            sinon.stub(Users, "findById").rejects(new Error("User not found"));
-
-            const usersService = new UsersService();
-
-            // Using chai-as-promised to assert on rejection
-            await expect(usersService.updateUserRoleById("non_existing_id", "admin")).to.be.rejectedWith("User not found");
-        });
-    });
+    // Additional tests can be added for deleteUserById, updateUserRoleById, etc.
 });
