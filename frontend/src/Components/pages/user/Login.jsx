@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Nav } from 'react-bootstrap';
@@ -18,6 +18,7 @@ const Login = ({ setLoggedIn }) => {
     const [loggedIn, setLoggedInState] = useState(false);
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const navigate = useNavigate();
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;

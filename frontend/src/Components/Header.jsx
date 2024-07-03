@@ -5,7 +5,7 @@ import { BsBag } from "react-icons/bs";
 import { SidebarContext } from "../contexts/SidebarContext";
 import { CartContext } from "../contexts/CartContext";
 
-const Header = () => {
+const Header = ({ resetCart }) => {
   const [isActive, setIsActive] = useState(false);
   const { isOpen, setIsOpen } = useContext(SidebarContext);
   const { itemAmount } = useContext(CartContext);
@@ -28,6 +28,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setLoggedIn(false);
+    resetFavourites();
     navigate("/login");
   };
 

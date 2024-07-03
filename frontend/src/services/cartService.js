@@ -8,7 +8,19 @@ export const fetchCart = async () => {
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
     });
-    return response.data;
+    console.log(response.data.products);
+    const transformedCart = response.data.products.map(item => ({
+        id: item.product.id, // Assuming _id is the unique identifier
+        title: item.product.title,
+        description: item.product.description,
+        category: item.product.category,
+        image: item.product.image,
+        price: item.product.price,
+        rating: item.product.rating,
+        amount: item.quantity
+        // Add other fields as needed
+    }));
+    return transformedCart;
 };
 
 export const addToCart = async (product) => {
