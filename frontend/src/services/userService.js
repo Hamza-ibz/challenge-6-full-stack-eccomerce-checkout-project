@@ -43,4 +43,33 @@ export const loginUser = async (formData) => {
         // throw new Error(error.response?.data?.message || error.message);
         return error;
     }
+
+
 };
+
+export const fetchAdminData = async () => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${BASE_URL}/admin`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'An error occurred while fetching admin data.');
+    }
+};
+
+// export const deleteUser = async (userId) => {
+//     try {
+//         const token = localStorage.getItem('token');
+//         await axios.delete(`${BASE_URL}/${userId}`, {
+//             headers: {
+//                 'Authorization': `Bearer ${token}`,
+//             },
+//         });
+//     } catch (error) {
+//         throw new Error(error.response?.data?.message || 'An error occurred while deleting the user.');
+//     }
+// };

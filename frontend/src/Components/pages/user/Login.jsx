@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+// src/Components/pages/user/Login.jsx
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { Nav } from 'react-bootstrap';
@@ -19,7 +20,6 @@ const Login = ({ setLoggedIn }) => {
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const navigate = useNavigate();
 
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({
@@ -39,6 +39,7 @@ const Login = ({ setLoggedIn }) => {
             });
         } else {
             localStorage.setItem('token', response.token); // Store the token in local storage
+            localStorage.setItem('role', response.role); // Store the role in local storage
             setLoggedIn(true);
             setLoggedInState(true);
             setShowModal(true); // Show modal on successful login
