@@ -132,17 +132,18 @@ const CartProvider = ({ children }) => {
       });
       setCart(newCart);
     }
-    // if (cartItem.amount < 2) {
-    //   removeFromCart(id);
-    // }
+    if (cartItem.amount < 2) {
+      removeFromCart(id);
+    } else {
 
-    // Prepare the payload for the API request
-    const payload = { productId: id };
+      // Prepare the payload for the API request
+      const payload = { productId: id };
 
-    try {
-      await removeCartItemAPI(payload);
-    } catch (error) {
-      console.error('Failed to remove to cart:', error);
+      try {
+        await removeCartItemAPI(payload);
+      } catch (error) {
+        console.error('Failed to remove to cart:', error);
+      }
     }
     // const cartItem = cart.find((item) => item.id === id);
     // if (cartItem) {
