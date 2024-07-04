@@ -61,7 +61,7 @@ const Header = ({ resetCart }) => {
         <Link to="/" className="flex items-center">
           <img src={Logo} alt="Logo" className="w-12 h-12 mr-2" />
           <span className="text-lg font-semibold text-gray-800">
-            Your App Name
+            FRESH FASHION
           </span>
         </Link>
 

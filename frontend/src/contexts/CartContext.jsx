@@ -107,10 +107,15 @@ const CartProvider = ({ children }) => {
 
       const payload = { productId: id };
 
+      // try {
+      //   await updateCartItemAPI(payload);
+      // } catch (error) {
+      //   console.error('Failed to update cart item:', error);
+      // }
       try {
-        await updateCartItemAPI(payload);
+        await addToCartAPI(payload);
       } catch (error) {
-        console.error('Failed to update cart item:', error);
+        console.error('Failed to add to cart:', error);
       }
     }
   };
@@ -118,27 +123,51 @@ const CartProvider = ({ children }) => {
   const decreaseAmount = async (id) => {
     const cartItem = cart.find((item) => item.id === id);
     if (cartItem) {
-      if (cartItem.amount > 1) {
-        const newCart = cart.map((item) => {
-          if (item.id === id) {
-            return { ...item, amount: item.amount - 1 };
-          }
+      const newCart = cart.map((item) => {
+        if (item.id === id) {
+          return { ...item, amount: cartItem.amount - 1 };
+        } else {
           return item;
-        });
-        setCart(newCart);
-
-        const payload = { productId: id };
-
-        try {
-          await updateCartItemAPI(payload);
-        } catch (error) {
-          console.error('Failed to update cart item:', error);
         }
-      } else {
-        removeFromCart(id);
-      }
+      });
+      setCart(newCart);
     }
+    // if (cartItem.amount < 2) {
+    //   removeFromCart(id);
+    // }
+
+    // Prepare the payload for the API request
+    const payload = { productId: id };
+
+    try {
+      await removeCartItemAPI(payload);
+    } catch (error) {
+      console.error('Failed to remove to cart:', error);
+    }
+    // const cartItem = cart.find((item) => item.id === id);
+    // if (cartItem) {
+    // if (cartItem.amount > 1) {
+    //   const newCart = cart.map((item) => {
+    //     if (item.id === id) {
+    //       return { ...item, amount: item.amount - 1 };
+    //     }
+    //     return item;
+    //   });
+    //   setCart(newCart);
+
+    //   const payload = { productId: id };
+
+    //   try {
+    //     await updateCartItemAPI(payload);
+    //   } catch (error) {
+    //     console.error('Failed to update cart item:', error);
+    //   }
+    // } else {
+    //   removeFromCart(id);
+    // }
+    // }
   };
+
 
   const closeModal = () => {
     setShowModal(false);
